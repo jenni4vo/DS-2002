@@ -46,13 +46,13 @@ SET fo.paid_date_key = dd.date_key;
 # Step 3: Validate that newly updated columns contain valid data
 # ==============================================================
 SELECT customer_id
-	, customer_key
+-- 	, customer_key
     , employee_id
-    , employee_key
+--     , employee_key
     , product_id
-    , product_key
+--     , product_key
     , shipper_id
-    , shipper_key
+--     , shipper_key
     , order_date
     , order_date_key
     , paid_date
