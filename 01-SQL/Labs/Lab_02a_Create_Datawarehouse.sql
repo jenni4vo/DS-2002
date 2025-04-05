@@ -83,6 +83,23 @@ CREATE TABLE `dim_products` (
 # TODO: CREATE the `dim_shippers` dimension table ----------
 # ----------------------------------------------------------
 # DROP TABLE `dim_shippers`;
+CREATE TABLE `dim_shippers` (
+  `shipper_key` int NOT NULL AUTO_INCREMENT,
+  `shipper_id` int NOT NULL,
+  `company` varchar(50) DEFAULT NULL,
+  `address` longtext,
+  `city` varchar(50) DEFAULT NULL,
+  `state_province` varchar(50) DEFAULT NULL,
+  `zip_postal_code` varchar(15) DEFAULT NULL,
+  `country_region` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`shipper_key`),
+  KEY `city` (`city`),
+  KEY `company` (`company`),
+  KEY `zip_postal_code` (`zip_postal_code`),
+  KEY `state_province` (`state_province`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+
 
 
 # ----------------------------------------------------------------------
@@ -91,3 +108,61 @@ CREATE TABLE `dim_products` (
 # To keep things simple, don't include purchase order or inventory info
 # ----------------------------------------------------------------------
 # DROP TABLE `fact_orders`;
+CREATE TABLE `fact_orders` (
+  `fact_order_key` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `order_detail_id` int NOT NULL,
+  `employee_id` int DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `product_id` int DEFAULT NULL,
+  `shipper_id` int DEFAULT NULL,
+  `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paid_date` datetime DEFAULT NULL,
+  `shipped_date` datetime DEFAULT NULL,
+  `payment_type` varchar(50) DEFAULT NULL,
+  `quantity` decimal(18,4) NOT NULL DEFAULT '0.0000',
+  `unit_price` decimal(19,4) DEFAULT '0.0000',
+  `shipping_fee` decimal(19,4) DEFAULT '0.0000',
+  `discount` double DEFAULT '0',
+  `taxes` decimal(19,4) DEFAULT '0.0000',
+  `tax_rate` double DEFAULT '0',
+  `orders_status` VARCHAR(50) DEFAULT '0',
+  `order_details_status` VARCHAR(50) DEFAULT NULL,
+  PRIMARY KEY (`fact_order_key`),
+  KEY `order_id` (`order_id`),
+  KEY `customer_id` (`customer_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `product_id` (`product_id`),
+  KEY `shipper_id` (`shipper_id`),
+  KEY `payment_type` (`payment_type`),
+  KEY `orders_status` (`orders_status`),
+  KEY `order_details_status` (`order_details_status`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
+
+-- CREATE TABLE `order_details` (
+--   `order_detail_id` int NOT NULL,
+--   `product_id` int DEFAULT NULL,
+--   `quantity` decimal(18,4) NOT NULL DEFAULT '0.0000',
+--   `unit_price` decimal(19,4) DEFAULT '0.0000',
+--   `discount` double NOT NULL DEFAULT '0',
+--   `order_details_status` VARCHAR(50) DEFAULT NULL,
+--   `date_allocated` datetime DEFAULT NULL,
+--   PRIMARY KEY (`id`),
+--   KEY `id` (`id`),
+--   KEY `inventory_id` (`inventory_id`),
+--   KEY `id_2` (`id`),
+--   KEY `id_3` (`id`),
+--   KEY `id_4` (`id`),
+--   KEY `product_id` (`product_id`),
+--   KEY `product_id_2` (`product_id`),
+--   KEY `purchase_order_id` (`purchase_order_id`),
+--   KEY `id_5` (`id`),
+--   KEY `fk_order_details_orders1_idx` (`order_id`),
+--   KEY `fk_order_details_order_details_status1_idx` (`status_id`),
+--   CONSTRAINT `fk_order_details_order_details_status1` FOREIGN KEY (`status_id`) REFERENCES `order_details_status` (`id`),
+--   CONSTRAINT `fk_order_details_orders1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+--   CONSTRAINT `fk_order_details_products1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb3;
+
+
+
